@@ -1,0 +1,6 @@
+# ignore following type files
+*.py~
+*.pdf
+*.png
+*.out
+*.pdf~
