@@ -1,4 +1,14 @@
-# This script is used for calculating the difference between
+# This script is used for calculating the Thin-wall evaluation of radius of critical bubble
+# The basic idea is using A. J. Leggtt's simply considerations when f_A - f_B is small and
+# R_c / \xi, R_c/t are both very tiny, and close to T_AB
+# For details, checking his Journal of Low Temperature vol.87 571 1992 and Yip & Leggtt review
+# in Helium Three 1990.
+
+# the critical radius are plotted as countours, and compared with the experiment data from Lotynk's experiment.
+# the result is amazing, and suggests R_c ~ 400 \xi
+
+# Tension is using 0.7 \xi f_B data from experment.
+
 # equilibruium free energy of A and B phase.
 # the pressure region is 21 - 34 bar.
 
