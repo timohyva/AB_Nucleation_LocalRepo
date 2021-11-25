@@ -159,11 +159,11 @@ BetaObject = BETA('betaAndTc')
 # calculate free energy under different temperature     
 
 stepT = 0.001*(10**-3) 
-Temperature = np.arange(0.0*(10**-3), 2.40*(10**-3), stepT) #Kelvin
+Temperature = np.arange(2.0*(10**-3), 2.40*(10**-3), stepT) #Kelvin
 
 stepPressure = 0.001*bar
 # pressure = np.arange(20.0, 33.9*bar, stepPressure)
-pressure = np.arange(19.0, 33.99*bar+stepPressure, stepPressure)
+pressure = np.arange(19.9, 22.99*bar+stepPressure, stepPressure)
 
 print('Temperature is', Temperature, '\n length of Temperature is ', len(Temperature))
 lengthT = len(Temperature)
@@ -258,7 +258,7 @@ for iP in range(0, lengthPressure, 1):
            if TempData1 > 0:
 
               
-              ThinWall_Estimate_Rc_DiffFABGLScaled[indexP,indexT] = TempData2/TempData1
+              ThinWall_Estimate_Rc_DiffFABGLScaled[indexP,indexT] =2*(TempData2/TempData1)
               # LeggttEstimate_Rc_DiffFABGLScaled_logarithim[indexP,indexT] = math.log((2*0.7)/TempData)
               print(" Fucking is ", ThinWall_Estimate_Rc_DiffFABGLScaled[indexP,indexT])
 
@@ -408,9 +408,9 @@ print("fuckData2 is", fuckData2)
 plot1.scatter(fuckData1, fuckData2)
 #matplotlib.pyplot.scatter(fuckData1, fuckData2)
 
-plot1.title(r'${R^{thin-wall}_{c}}/{\xi_{GL}} = |f_{A}|/{\Delta}f_{AB}$')
+plot1.title(r'${R^{thin-wall}_{c}}/{\xi_{GL}} \sim 2|f_{A}|/{\Delta}f_{AB}$')
 plot1.colorbar(cs)
-plot1.savefig('Distribution_of_Rc_ThinWall_Evaluation_Logarithim_Contour.pdf');
+plot1.savefig('Distribution_of_Rc_ThinWall_Evaluation_Logarithim_Contour_versionIII.pdf');
 # plot1.show()
 
 plot1.show()
