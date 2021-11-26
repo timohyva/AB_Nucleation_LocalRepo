@@ -58,7 +58,7 @@ class BETA:
      def vFermi_function(self,P,VF,pressure):
          self.vf = np.interp(pressure,P,VF)
          
-     def xi0_function(self,P,VF,pressure):
+     def xi0_function(self,P,XI0,pressure):
          self.xi0 = np.interp(pressure,P,XI0)    
          
          
