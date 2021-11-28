@@ -79,13 +79,8 @@ lengthT = len(Temperature)
 print('Pressure is',pressure,'\n length of Delta is ', len(pressure))
 lengthPressure = len(pressure)
 
-fBGL_array = np.zeros((lengthPressure,lengthT))
-fAGL_array = np.zeros((lengthPressure,lengthT))
-DiffFABGL = np.zeros((lengthPressure,lengthT)) # save data of the energy difference
-
+# lots of saving matrices
 DiffFABGLScaled = np.zeros((lengthPressure,lengthT)) # save data of the energy differene, which be scaled by |fBGL|
-
-ThinWall_Estimate_Rc_DiffFABGLScaled = np.zeros((lengthPressure,lengthT)) # save data of the thin-wall evaluation of R_{c} with experiment tension \sigma = 0.7 \xi f_{B}
 
 ThinWall_Evaluation_of_EnergyBarrier_DiffFABGLScaled = np.zeros((lengthPressure,lengthT)) # save data of the thin-wall evaluation of energy barrier with experiment tension \sigma = 0.7 \xi f_{B}
 
@@ -93,7 +88,17 @@ ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension = np.zeros((len
 
 ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi = np.zeros((lengthPressure,lengthT)) # save data of the thin-wall evaluation of energy barrier with insteading tension by |f_A| \xi
 
-LeggttEstimate_Rc_DiffFABGLScaled_logarithim = np.zeros((lengthPressure,lengthT)) # save logarithm data of the thin-wall evaluation of R_{c} with experiment tension \sigma = 0.7 \xi f_{B}
+TempretureDependent_GL_CoherentLength = np.zeros((lengthPressure,lengthT)) # save the temperature dependent coherent length
+
+EnergyDensity_Difference_fABGL = np.zeros((lengthPressure,lengthT)) # save the SI unit \Delta fAB
+
+EnergyDensity_fA = np.zeros((lengthPressure,lengthT)) # save the SI unit \Delta fA
+
+EnergyDensity_fB = np.zeros((lengthPressure,lengthT)) # save the SI unit \Delta fB
+
+ThinWall_Estimate_Rc_fAxi = np.zeros((lengthPressure,lengthT)) # save data of the thin-wall evaluation of energy barrier with insteading tension by |f_A| \xi
+
+ThinWall_Estimate_Rc_ExpermentTension = np.zeros((lengthPressure,lengthT)) # save data of the thin-wall evaluation of R_{c} with experiment tension \sigma = 0.7 \xi f_{B}
 
 for iP in range(0, lengthPressure, 1):
     print('\n\n Now P is:', pressure[iP], '\n\n')
@@ -131,22 +136,40 @@ for iP in range(0, lengthPressure, 1):
         print('temperatureis:, ',t)
 
         xiGLWeakCoupling = math.sqrt((7.0*zeta3)/20.0)*xi0p # weak coupling GL coherent length in PRB 101 024517
-        
 
-        if t > 1:
+         
+
+        if t >= 1:
 
            print(" bro, we just got temperature at Tc, save a np.nan. ")
-
+      
            ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi[indexP,indexT] = np.nan
            ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension[indexP,indexT] = np.nan
 
-           #DiffFABGL[indexP,indexT] = np.nan
-           #DiffFABGLScaled[indexP,indexT] = np.nan
+           ThinWall_Estimate_Rc_fAxi[indexP,indexT] = np.nan
+           ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT] = np.nan
+
+
+           # save the energy density difference
+           EnergyDensity_Difference_fABGL[indexP,indexT] = np.nan
+
+           # save the energy density difference
+           EnergyDensity_fA[indexP,indexT] = np.nan
+           # save the energy density difference
+           EnergyDensity_fB[indexP,indexT] = np.nan
+
+           # masked GL coherent length
+           TempretureDependent_GL_CoherentLength[indexP,indexT] = np.nan
+           
 
            
-        else:    
+        else:
 
-           xitp = xiGLWeakCoupling/math.sqrt(1-t) # temperature dependent coherent length
+           xitp = xiGLWeakCoupling/math.sqrt(1-t) # temperature dependent coherent length  
+
+           # save the temperature-dependent coherent length
+           TempretureDependent_GL_CoherentLength[indexP,indexT] = xitp
+           
            print(' Temperature dependent GL xi is ', xitp)
             
            alphaRed = (1/3)*(t-1)
@@ -166,12 +189,26 @@ for iP in range(0, lengthPressure, 1):
            fAGL = fAGLRed * N0 # real value of fAGL
            fBGL = fBGLRed * N0 # real value of fBGL
            DiffFABGL = fAGL - fBGL # real value of \Delta f_AB
+
+           # save the energy density difference
+           EnergyDensity_Difference_fABGL[indexP,indexT] = DiffFABGL
+
+           # save the energy density difference
+           EnergyDensity_fA[indexP,indexT] = fAGL
+           # save the energy density difference
+           EnergyDensity_fB[indexP,indexT] = fBGL
+           
+           
            print('fAGL in SI unit is:', fAGL)
            print('fBGL in SI unit is:', fBGL)
            print('DiffFABGL in SI unit is:', DiffFABGL)
 
+           
+           ################################################################
+           # calculation for thin-wall evaluation of energy barrier
+           ################################################################
            numerator1 = (abs(fAGL)*xitp)**3 # tension for |fA| xi evaluation
-           numerator2 = (0.7*abs(fBGL)*xitp)**3 # tension from experiment closed TAB
+           numerator2 = (0.71*abs(fBGL)*xitp)**3 # tension from experiment closed TAB
            dinorminator = DiffFABGL**2 
            KbT = kb*Temperature[indexT]
            print('KbT is:', KbT)
@@ -187,9 +224,15 @@ for iP in range(0, lengthPressure, 1):
 
            EnergyBarrier_experimentTension_KbT = EnergyBarrier_experimentTension/KbT # Energy Barrier with SI unit
            print(' energy barrier by 0.7 |fB| xi in unit of KbT is ', EnergyBarrier_experimentTension_KbT)
-           
 
-           #TempData2 = 0.7 # numerical value of surface
+           
+           ###################################################################
+           # calculation for thin-wall evaluation of radius of critical bubble
+           ###################################################################
+           
+           Rc_fAxi = (2*abs(fAGL)*xitp)/DiffFABGL # tension is |f_A| xi
+
+           Rc_ExpermentTension = (2*0.71*abs(fBGL)*xitp)/DiffFABGL # tension is 0.7 |f_B| xi
            
            if DiffFABGL > 0:
 
@@ -202,6 +245,18 @@ for iP in range(0, lengthPressure, 1):
 
               print(" thin wall energy barrier in KbT is ", ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension[indexP,indexT])
 
+              
+              
+
+              ThinWall_Estimate_Rc_fAxi[indexP,indexT] = Rc_fAxi
+              
+              print(" thin wall Rc by |f_A| xi is ", ThinWall_Estimate_Rc_fAxi[indexP,indexT])
+
+              ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT] = Rc_ExpermentTension
+
+              print(" thin wall Rc by 0.7 |f_B| xi is ", ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT])
+
+
            else:
 
               print(" bro, you get negative logarithm, save a np.nan. ")
@@ -209,13 +264,20 @@ for iP in range(0, lengthPressure, 1):
               ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi[indexP,indexT] = np.nan
 
               ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension[indexP,indexT] = np.nan
-              
-                
-          # DiffFABGL[indexP,indexT] = DiffFABGLScaled[indexP,indexT]*abs(fBGLRed*N0)
+
+              ThinWall_Estimate_Rc_fAxi[indexP,indexT] = np.nan
+
+              ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT] = np.nan
         
 
-    print('Mark suggested evaluation of Energy barrier by |fA|xiin KbT is: ', ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi[indexP,:])
-    print('Mark suggested evaluation of Energy barrier by 0.7 |fB|xi in KbT is: ', ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension[indexP,:])
+    print('Thin-wall evaluation of Energy barrier by |fA|xiin KbT is: ', ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi[indexP,:])
+    print('Thin-Wall evaluation of Energy barrier by 0.7 |fB|xi in KbT is: ', ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension[indexP,:])
+
+    print('Thin-wall evaluation of Rc by |fA|xiin KbT is: ', ThinWall_Estimate_Rc_fAxi[indexP,:])
+    print('Thin-Wall evaluation of Rc by 0.7 |fB|xi in KbT is: ', ThinWall_Estimate_Rc_ExpermentTension[indexP,:])
+
+    print('the GL coherent length in this pressure is: ', TempretureDependent_GL_CoherentLength[indexP,:]*(10**9))
+    
 
     
 
@@ -305,14 +367,25 @@ for iP in range(0, lengthPressure, 1):
 # plot1.cla()
 # plot1.close()
 
-# contour plot of the |f_A| xi evaluation 
 
-LLLLL = [10**4, 3*10**4, 5*10**4, 7*10**4, 9*10**4, 10**5, 3*10**5, 5*10**5, 7*10**5, 9*10**5, 10**6, 3*10**6, 5*10**6, 7*10**6, 9*10**6, 10**7, 3*10**7, 5*10**7, 7*10**7, 9*10**7, 10**8] 
+
+
+########################################################
+# contour plot energy barrier of the |f_A| xi evaluation
+########################################################
+
+# LLLLL = [10**4, 3*10**4, 5*10**4, 7*10**4, 9*10**4, 10**5, 3*10**5, 5*10**5, 7*10**5, 9*10**5, 10**6, 3*10**6, 5*10**6, 7*10**6, 9*10**6, 10**7, 3*10**7, 5*10**7, 7*10**7, 9*10**7, 10**8, 3*10**8, 5*10**8, 7*10**8, 9*10**8, 10**9, 3*10**9, 5*10**9, 7*10**9, 9*10**9, 10**10]
+LLLLL = [10**5, 3*10**5, 5*10**5, 7*10**5, 9*10**5, 10**6, 3*10**6, 5*10**6, 7*10**6, 9*10**6, 10**7, 3*10**7, 5*10**7, 7*10**7, 9*10**7, 10**8, 3*10**8, 5*10**8, 7*10**8, 9*10**8, 10**9, 3*10**9, 5*10**9, 7*10**9, 9*10**9, 10**10] 
 X, Y = np.meshgrid(Temperature, pressure)
 # fig, ax = plot1.subplots()
-cs = plot1.contourf(X*(10**3), Y, ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_fAxi, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cb = plot1.colorbar(cs1)
+cb.set_ticks([10**5,5.0*10**5, 10**6, 5.0*10**6, 10**7, 5.0*10**7, 10**8, 5*10**8, 10**9, 5*10**9, 10**10])
 #cs.collections[0].set_label(r'${R^{thin-wall}_{c}}/{\xi}=2{\sigma^{experiment}_{AB}}/{\Delta}f_{AB}{\xi}$')
 # plot1.legend(loc='lower right')
+
+# Plot the TAB line
+cs2 = plot1.contour(X*(10**3), Y, EnergyDensity_Difference_fABGL, levels=[0.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=8.5, colors='r')
 
 # import the csv data of experment
 with open('slow_transition_lot_et_al_2021.csv', newline='') as f:
@@ -339,27 +412,131 @@ for ii in list(list1[1]):
 
 print("fuckData2 is", fuckData2)    
 
-# #atplotlib.pyplot.scatter(list(list1[0]),list(list1[1]))
-# #matplotlib.pyplot.show()
+plot1.scatter(fuckData1, fuckData2)
+#matplotlib.pyplot.scatter(fuckData1, fuckData2)
+
+# plot1.title(r'${\Delta}G^{thin-wall}_{Barrier}/(k_{B}T) \sim \frac{16{\pi}}{3} \frac{({0.7|f_B|{\xi_{GL}})}^{3}}{{{\Delta}f_{AB}}^{2}} $')
+plot1.title(r'${\Delta}G^{thin-wall}_{Barrier}/(k_{B}T) \sim \frac{16{\pi}}{3} \frac{({|f_A|{\xi_{GL}}})^{3}}{{{\Delta}f_{AB}}^{2}} /k_{b}T $')
+plot1.savefig('Distribution_of_EnergyBarrier_ThinWall_Evaluation_Contour_fAxi_SCModule_versionI.pdf');
+
+plot1.show()
+
+####################################################################
+# contour plot of energy barrier by 0.7 |f_B|xi tension
+####################################################################
+
+
+X, Y = np.meshgrid(Temperature, pressure)
+# fig, ax = plot1.subplots()
+cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cb = plot1.colorbar(cs1)
+cb.set_ticks([10**5,5.0*10**5, 10**6, 5.0*10**6, 10**7, 5.0*10**7, 10**8, 5*10**8, 10**9, 5*10**9, 10**10])
+#cs.collections[0].set_label(r'${R^{thin-wall}_{c}}/{\xi}=2{\sigma^{experiment}_{AB}}/{\Delta}f_{AB}{\xi}$')
+# plot1.legend(loc='lower right')
+
+cs2 = plot1.contour(X*(10**3), Y, EnergyDensity_Difference_fABGL, levels=[0.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=8.5, colors='r')
+
+# import the csv data of experment
+with open('slow_transition_lot_et_al_2021.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+
+print(data)
+
+
+list1 = list(zip(*data))
+print(list1)
+print(list(list1[0]))
+print(list1[1])
+
+fuckData1 = []
+for ii in list(list1[0]):
+    fuckData1.append(float(ii))
+
+print("fuckData1 is", fuckData1)  
+    
+fuckData2 = []
+for ii in list(list1[1]):
+    fuckData2.append(float(ii))    
+
+print("fuckData2 is", fuckData2)    
+
+plot1.scatter(fuckData1, fuckData2)
+#matplotlib.pyplot.scatter(fuckData1, fuckData2)
+
+plot1.title(r'${\Delta}G^{thin-wall}_{Barrier}/(k_{B}T) \sim \frac{16{\pi}}{3} \frac{({0.7|f_B|{\xi_{GL}}})^{3}}{{{\Delta}f_{AB}}^{2}} /k_{b}T$')
+plot1.savefig('Distribution_of_EnergyBarrier_ThinWall_Evaluation_ExperimentalTension_Contour_SCModule_versionI.pdf');
+
+plot1.show()
+
+
+
+###################################################
+# contour plot Rc of the |f_A| xi evaluation
+###################################################
+
+# LLLLL = [10**0, 3*10**0, 5*10**0, 7*10**0, 9*10**0, 10**1, 3*10**1, 5*10**1, 7*10**1, 9*10**1, 10**2, 3*10**2, 5*10**2, 7*10**2, 9*10**2, 10**3, 3*10**3, 5*10**3, 7*10**3, 9*10**3, 10**4, 3*10**4, 5*10**4, 7*10**4, 9*10**4, 10**5, 3*10**5, 5*10**5, 7*10**5, 9*10**5, 10**6, 3*10**6, 5*10**6, 7*10**6, 9*10**6, 10**7, 3*10**7, 5*10**7, 7*10**7, 9*10**7, 10**8]
+LLLLL = [10**0, 3*10**0, 5*10**0, 7*10**0, 9*10**0, 10**1, 3*10**1, 5*10**1, 7*10**1, 9*10**1, 10**2, 3*10**2, 5*10**2, 7*10**2, 9*10**2, 10**3] 
+X, Y = np.meshgrid(Temperature, pressure)
+# fig, ax = plot1.subplots()
+cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Estimate_Rc_fAxi/xitp, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cb = plot1.colorbar(cs1)
+cb.set_ticks([10**0, 5*10**0, 10**1, 5*10**1, 10**2, 5*10**2, 10**3])
+
+#cs.collections[0].set_label(r'${R^{thin-wall}_{c}}/{\xi}=2{\sigma^{experiment}_{AB}}/{\Delta}f_{AB}{\xi} /\xi_{GL}$')
+# plot1.legend(loc='lower right')
+
+# Plot the TAB line
+cs2 = plot1.contour(X*(10**3), Y, EnergyDensity_Difference_fABGL, levels=[0.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=8.5, colors='r')
+
+# import the csv data of experment
+with open('slow_transition_lot_et_al_2021.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+
+print(data)
+
+
+list1 = list(zip(*data))
+print(list1)
+print(list(list1[0]))
+print(list1[1])
+
+fuckData1 = []
+for ii in list(list1[0]):
+    fuckData1.append(float(ii))
+
+print("fuckData1 is", fuckData1)  
+    
+fuckData2 = []
+for ii in list(list1[1]):
+    fuckData2.append(float(ii))    
+
+print("fuckData2 is", fuckData2)    
 
 plot1.scatter(fuckData1, fuckData2)
 #matplotlib.pyplot.scatter(fuckData1, fuckData2)
 
 # plot1.title(r'${\Delta}G^{thin-wall}_{Barrier}/(k_{B}T) \sim \frac{16{\pi}}{3} \frac{({0.7|f_B|{\xi_GL}})^{3}}{{{\Delta}f_{AB}}^{2}} $')
-plot1.title(r'${\Delta}G^{thin-wall}_{Barrier}/(k_{B}T) \sim \frac{16{\pi}}{3} \frac{({|f_A|{\xi_GL}})^{3}}{{{\Delta}f_{AB}}^{2}} /k_{b}T $')
-plot1.colorbar(cs)
-plot1.savefig('Distribution_of_EnergyBarrier_ThinWall_Evaluation_Logarithim_Contour_SCModule_versionI.pdf');
+plot1.title(r'$R^{thin-wall}_c/{\xi_{GL}} \sim \frac{2 |f_A|}{{\Delta}f_{AB}} /\xi_{GL}$')
+plot1.savefig('Distribution_of_Rc_ThinWall_Evaluation_Contour_fAxi_SCModule_versionI.pdf');
 
 plot1.show()
 
-# contour plot of energy barrier by 0.7 |f_B|xi tension 
+####################################################################
+# contour plot of Rc by 0.7 |f_B|xi tension
+####################################################################
 
-LLLLL = [10**4, 3*10**4, 5*10**4, 7*10**4, 9*10**4, 10**5, 3*10**5, 5*10**5, 7*10**5, 9*10**5, 10**6, 3*10**6, 5*10**6, 7*10**6, 9*10**6, 10**7, 3*10**7, 5*10**7, 7*10**7, 9*10**7, 10**8] 
+
 X, Y = np.meshgrid(Temperature, pressure)
 # fig, ax = plot1.subplots()
-cs = plot1.contourf(X*(10**3), Y, ThinWall_Evaluation_of_EnergyBarrier_DiffFABGL_ExperimentTension, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Estimate_Rc_ExpermentTension/xitp, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cb = plot1.colorbar(cs1)
+cb.set_ticks([10**0, 5*10**0, 10**1, 5*10**1, 10**2, 5*10**2, 10**3])
 #cs.collections[0].set_label(r'${R^{thin-wall}_{c}}/{\xi}=2{\sigma^{experiment}_{AB}}/{\Delta}f_{AB}{\xi}$')
 # plot1.legend(loc='lower right')
+
+cs2 = plot1.contour(X*(10**3), Y, EnergyDensity_Difference_fABGL, levels=[0.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=8.5, colors='r')
 
 # import the csv data of experment
 with open('slow_transition_lot_et_al_2021.csv', newline='') as f:
@@ -386,18 +563,45 @@ for ii in list(list1[1]):
 
 print("fuckData2 is", fuckData2)    
 
-# #atplotlib.pyplot.scatter(list(list1[0]),list(list1[1]))
-# #matplotlib.pyplot.show()
-
 plot1.scatter(fuckData1, fuckData2)
 #matplotlib.pyplot.scatter(fuckData1, fuckData2)
 
-plot1.title(r'${\Delta}G^{thin-wall}_{Barrier}/(k_{B}T) \sim \frac{16{\pi}}{3} \frac{({0.7|f_B|{\xi_GL}})^{3}}{{{\Delta}f_{AB}}^{2}} /k_{b}T$')
-plot1.colorbar(cs)
-plot1.savefig('Distribution_of_EnergyBarrier_ThinWall_Evaluation_Logarithim_Contour_SCModule_versionII.pdf');
+plot1.title(r'$R^{thin-wall}_{c} \sim \frac{2 \times 0.71 |f_B|}{{\Delta}f_{AB}} /\xi_{GL}$')
+plot1.savefig('Distribution_of_Rc_ThinWall_Evaluation_ExperimentalTension_Contour_SCModule_versionI.pdf');
 
 plot1.show()
 
+
+
+#################################################################
+# contour plot of temperature-pressure dependent coherent length
+#################################################################
+
+
+
+
+X, Y = np.meshgrid(Temperature, pressure)
+# cs1 = plot1.contourf(X*(10**3), Y, TempretureDependent_GL_CoherentLength*(10**9), locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+DensityPlot = plot1.pcolormesh(X*(10**3), Y, TempretureDependent_GL_CoherentLength*(10**9));plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK')
+cb = plot1.colorbar(DensityPlot)
+plot1.clim(0, 250) # restrict the upper limit of colorbar
+cb.set_ticks([10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 150.0, 170.0, 190.0, 210.0, 230.0, 250.0]) # set the position of ticks of colorbar
+
+# contour plot
+LLLLL = np.arange(20, 200, 10)
+cs1 = plot1.contour(X*(10**3), Y, TempretureDependent_GL_CoherentLength*(10**9), locator=ticker.LogLocator(), levels=LLLLL, colors='black');plot1.clabel(cs1, inline=True, fontsize=9.5, colors='k')
+plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+
+# cs.collections[0].set_label(r'${R^{thin-wall}_{c}}/{\xi}=2{\sigma^{experiment}_{AB}}/{\Delta}f_{AB}{\xi}$')
+# plot1.legend(loc='lower right')
+
+# Plot the TAB line
+cs2 = plot1.contour(X*(10**3), Y, EnergyDensity_Difference_fABGL, levels=[0.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=9.5, colors='k')
+
+plot1.title(r'$\xi_{GL}(p, T)/nm$')
+plot1.savefig('Distribution_of_GL_CoherentLength_Contour_SCModule_versionI.pdf');
+
+plot1.show()
 
 
 
