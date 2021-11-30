@@ -1,5 +1,21 @@
+#######################
+# Important notations #
+#######################
 
-# This script is used for calculating the Thin-wall evaluation of radius and energy barrier of critical bubble.
+
+# This script is used for calculating and plotting the thin-wall energy barriers and |f_A|/f_AB
+# under Lotynk's experimental pressure and temperature. Mark guessed the " accidence " between
+# |f_A|/f_AB plot and experimental nucleation events is clue about some kinds of " thick wall " bubble
+# in Enqvist's 1992 paper.
+
+# Then we actually expected the Thin-Wall energy barriers have no relationship with |f_A|/f_AB, which is monotonically
+# determine the 3D action S_3 of " thick wall " bubble in Enqvist's paper. And the resulted scatter plot exactly shows
+# out thin-wall energy barrier has poor relation with |f_A|/f_AB. and the former has bigger stand deviation (0.3037) than
+# the later (0.1). If the probalility of neucleations are same, then this bigger deviation just means the bubble definatley
+# is not thin-wall bubble.
+
+##############################################################################################################
+
 # The basic idea is using A. J. Leggtt's simply considerations when f_A - f_B is small and
 # R_c / \xi, R_c/t are both very tiny, and close to T_AB
 # For details, checking his Journal of Low Temperature vol.87 571 1992 and Yip & Leggtt review
