@@ -248,11 +248,11 @@ for iP in range(0, lengthPressure, 1):
               
               
 
-              ThinWall_Estimate_Rc_fAxi[indexP,indexT] = Rc_fAxi
+              ThinWall_Estimate_Rc_fAxi[indexP,indexT] = Rc_fAxi/xitp
               
               print(" thin wall Rc by |f_A| xi is ", ThinWall_Estimate_Rc_fAxi[indexP,indexT])
 
-              ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT] = Rc_ExpermentTension
+              ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT] = Rc_ExpermentTension/xitp
 
               print(" thin wall Rc by 0.7 |f_B| xi is ", ThinWall_Estimate_Rc_ExpermentTension[indexP,indexT])
 
@@ -479,7 +479,7 @@ plot1.show()
 LLLLL = [10**0, 3*10**0, 5*10**0, 7*10**0, 9*10**0, 10**1, 3*10**1, 5*10**1, 7*10**1, 9*10**1, 10**2, 3*10**2, 5*10**2, 7*10**2, 9*10**2, 10**3] 
 X, Y = np.meshgrid(Temperature, pressure)
 # fig, ax = plot1.subplots()
-cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Estimate_Rc_fAxi/xitp, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Estimate_Rc_fAxi, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
 cb = plot1.colorbar(cs1)
 cb.set_ticks([10**0, 5*10**0, 10**1, 5*10**1, 10**2, 5*10**2, 10**3])
 
@@ -530,7 +530,7 @@ plot1.show()
 
 X, Y = np.meshgrid(Temperature, pressure)
 # fig, ax = plot1.subplots()
-cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Estimate_Rc_ExpermentTension/xitp, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cs1 = plot1.contourf(X*(10**3), Y, ThinWall_Estimate_Rc_ExpermentTension, locator=ticker.LogLocator(), cmap=cm.PuBu_r, levels=LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
 cb = plot1.colorbar(cs1)
 cb.set_ticks([10**0, 5*10**0, 10**1, 5*10**1, 10**2, 5*10**2, 10**3])
 #cs.collections[0].set_label(r'${R^{thin-wall}_{c}}/{\xi}=2{\sigma^{experiment}_{AB}}/{\Delta}f_{AB}{\xi}$')
