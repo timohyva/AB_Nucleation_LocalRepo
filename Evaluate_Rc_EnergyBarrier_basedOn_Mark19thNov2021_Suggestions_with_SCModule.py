@@ -204,9 +204,9 @@ for iP in range(0, lengthPressure, 1):
            print('DiffFABGL in SI unit is:', DiffFABGL)
 
            
-           ################################################################
-           # calculation for thin-wall evaluation of energy barrier
-           ################################################################
+           #######################################################################
+           # calculation for thin-wall evaluation of energy barrier in unit of KbT
+           #######################################################################
            numerator1 = (abs(fAGL)*xitp)**3 # tension for |fA| xi evaluation
            numerator2 = (0.71*abs(fBGL)*xitp)**3 # tension from experiment closed TAB
            dinorminator = DiffFABGL**2 
