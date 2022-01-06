@@ -76,7 +76,7 @@ stepT = 0.02*(10**-3)*Kelvin
 Temperature = np.arange(0.0*(10**-3), 2.60*(10**-3), stepT) #Kelvin
 
 stepPressure = 0.02*bar
-pressure = np.arange(0.0*bar, 39.99*bar+stepPressure, stepPressure)
+pressure = np.arange(0.0*bar, 33.99*bar+stepPressure, stepPressure)
 
 print('Temperature is', Temperature, '\n length of Temperature is ', len(Temperature))
 lengthT = len(Temperature)
@@ -143,11 +143,14 @@ for iP in range(0, lengthPressure, 1):
 ###########################################################################
 
 #LLLLL = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1]
-LLLLL = [0.90, 0.905, 0.91, 0.915, 0.92, 0.925, 0.93, 0.935, 0.94, 0.945, 0.95, 0.955, 0.96, 0.965, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0, 1.005, 1.010, 1.015, 1.02, 1.025] 
+# LLLLL = [0.90, 0.905, 0.91, 0.915, 0.92, 0.925, 0.93, 0.935, 0.94, 0.945, 0.95, 0.955, 0.96, 0.965, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0, 1.005, 1.010, 1.015, 1.02, 1.025]
+# LLLLL = [0.90, 0.905, 0.91, 0.915, 0.92, 0.925, 0.93, 0.935, 0.94, 0.945, 0.95, 0.955, 0.96, 0.965, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0]
+LLLLL = np.arange(0.9, 1.0, 0.00001)
 X, Y = np.meshgrid(Temperature, pressure)
 # fig, ax = plot1.subplots()
 cs1 = plot1.contourf(X*(10**3), Y, array_lambdaBar, cmap=cm.PuBu_r, Levels = LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
 cb = plot1.colorbar(cs1)
+cs2 = plot1.contour(X*(10**3), Y, array_lambdaBar, levels=[1.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=9.5, colors='k')
 
 plot1.savefig('lambdaBar_AB_Phase_Enqvist_model_1.pdf');
 plot1.show()
