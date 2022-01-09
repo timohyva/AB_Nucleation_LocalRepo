@@ -44,6 +44,7 @@
 
 # import Module_SC_CorrectionObject_V01 as SC # strong coupling correction module
 import Module_SC_Beta_V01 as SC_beta_gaps # all SC beta and gaps of A&B in SI unit
+import Module_plot_TAB_line as TAB_line
 import matplotlib.pyplot as plot1
 import matplotlib
 import numpy as np
@@ -72,6 +73,7 @@ m3 = 3.016293*u #mass of helium3 atom
 ###################################################
 ###          Temperature and pressure array    ####
 ###################################################
+
 stepT = 0.02*(10**-3)*Kelvin 
 Temperature = np.arange(0.0*(10**-3), 2.60*(10**-3), stepT) #Kelvin
 
@@ -143,25 +145,42 @@ for iP in range(0, lengthPressure, 1):
 ###########################################################################
 
 #LLLLL = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1]
-# LLLLL = [0.90, 0.905, 0.91, 0.915, 0.92, 0.925, 0.93, 0.935, 0.94, 0.945, 0.95, 0.955, 0.96, 0.965, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0, 1.005, 1.010, 1.015, 1.02, 1.025]
-# LLLLL = [0.90, 0.905, 0.91, 0.915, 0.92, 0.925, 0.93, 0.935, 0.94, 0.945, 0.95, 0.955, 0.96, 0.965, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0]
-LLLLL = np.arange(0.9, 1.0, 0.00001)
+LLLLL = [0.90, 0.905, 0.91, 0.915, 0.92, 0.925, 0.93, 0.935, 0.94, 0.945, 0.95, 0.955, 0.96, 0.965, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0, 1.005, 1.010, 1.015, 1.02, 1.025]
+
+# LLLLL = 
 X, Y = np.meshgrid(Temperature, pressure)
 # fig, ax = plot1.subplots()
-cs1 = plot1.contourf(X*(10**3), Y, array_lambdaBar, cmap=cm.PuBu_r, Levels = LLLLL);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
+cs1 = plot1.contourf(X*(10**3), Y, array_lambdaBar, cmap=cm.PuBu_r, levels = LLLLL);
+cs1a = plot1.contour(X*(10**3), Y, array_lambdaBar, levels = LLLLL, colors = 'yellow'); plot1.clabel(cs1a, inline=True, fontsize=9.5, colors='yellow')
+plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
 cb = plot1.colorbar(cs1)
+
+# check the TAB line by using Module_TAB_line
 cs2 = plot1.contour(X*(10**3), Y, array_lambdaBar, levels=[1.0], colors='red'); # plot1.clabel(Cs2, inline=True, fontsize=9.5, colors='k')
+cs3 = plot1.contour(TAB_line.X*(10**3), TAB_line.Y, TAB_line.EnergyDensity_Difference_fABGL, levels=[0.0], colors='black'); plot1.clabel(cs3, inline=True, fontsize=9.5, colors='r')
+
+# add title for the plot
+plot1.title(r'$\bar{\lambda} = (9/2)({\lambda}M^{2}/{\delta}^{2})$ for $A \rightarrow B$. Red contour:$T_{AB}$')
 
 plot1.savefig('lambdaBar_AB_Phase_Enqvist_model_1.pdf');
 plot1.show()
-
            
 plot1.clf()
 plot1.cla()
 plot1.close()
 
+##############################################################################
+###############         Density Plot of Lambda_bar     #######################
+##############################################################################
+
 DensityPlot = plot1.pcolormesh(X*(10**3), Y, array_lambdaBar);plot1.ylabel(r'$p/bar$'); plot1.xlabel(r'$T$/mK');
 cb = plot1.colorbar(DensityPlot)
+
+# plot the TAB line with lambda_bar = 1
+cs2 = plot1.contour(X*(10**3), Y, array_lambdaBar, levels=[1.0], colors='red'); # plot1.clabel(cs2, inline=True, fontsize=9.5, colors='k')
+
+# add title for the plot
+plot1.title(r'$\bar{\lambda} = (9/2)({\lambda}M^{2}/{\delta}^{2})$ for $A \rightarrow B$, Red contour: $T_{AB}$')
 
 plot1.savefig('lambdaBar_AB_Phase_Enqvist_model_1_DensityPlot.pdf');
 plot1.show()
