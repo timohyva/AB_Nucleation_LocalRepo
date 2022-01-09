@@ -3,18 +3,23 @@
 ############################################################
 
 
-# This script is used for calculating and plotting the thin-wall energy barriers and |f_A|/f_AB
-# under Lotynk's experimental pressure and temperature. Mark guessed the " accidence " between
-# |f_A|/f_AB plot and experimental nucleation events is clue about some kinds of " thick wall " bubble
-# in Enqvist's 1992 paper.
+# This script is used for calculating and plotting the lambda_bar of the f(\phi) free energy
+# deduced from original GL free energy by setting \phi \times D_{\alpha i} = A_{B} - A_{A}. Here A_{A} and A_{B}
+# are particular order parameters of A and B phases. The explicit expression see the Mathematica note book.
+# The resulted contour plot and density plot show \bar{\lambda} > 0.93 in whole p-T region with H = 0.
 
-# Then we actually expected the Thin-Wall energy barriers have no relationship with |f_A|/f_AB, which is monotonically
-# determine the 3D action S_3 of " thick wall " bubble in Enqvist's paper. And the resulted scatter plot exactly shows
-# out thin-wall energy barrier has poor relation with |f_A|/f_AB. and the former has bigger stand deviation (0.3037) than
-# the later (0.1). If the probalility of neucleations are same, then this bigger deviation just means the bubble definatley
-# is not thin-wall bubble.
+# comparing with Enqvist's 92' PRD, this result means Direct A-B tunneling free energy f(\phi) seems always belongs
+# to " SSC " (Small Super Sooling) limit of Enqvist model.
 
-##############################################################################################################
+#log time: 10th. January. 2022
+
+
+###########################################################################################################
+##############         Significant Developments & Processes of WP2 project         ########################
+###########################################################################################################
+
+# Two new modules are created based on the primary SC_CorrectionObject module.
+# One is SC_Beta module and other one is plot_TAB_line module.
 
 # The basic idea is using A. J. Leggtt's simply considerations when f_A - f_B is small and
 # R_c / \xi, R_c/t are both very tiny, and close to T_AB
@@ -30,7 +35,7 @@
 
 # the pressure region is 21 - 34 bar.
 
-# This script uses the SC module.
+# This script uses the SC_Beta module and plot_TAB module, both of them use SC_CorrectionObject module.
 
 # strong coupling correction coefficients of \beta comes from PRB. 101. 024517
 # the free energy difference is rescaled by absolute value of equilibrium free energy of B phase
@@ -40,6 +45,9 @@
 # author: Quang. Zhang (github@hyvatimo)
 
 # zeta3 = 1.2020569;
+
+###########################################################################################################
+###########################################################################################################
 
 
 # import Module_SC_CorrectionObject_V01 as SC # strong coupling correction module
