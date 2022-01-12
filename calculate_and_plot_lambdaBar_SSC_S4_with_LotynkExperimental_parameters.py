@@ -183,10 +183,73 @@ for iP in range(0, lengthPressure, 1):
 print(" \n Lotynk's array_lambdaBar is: ", array_lambdaBar)
 print(" \n Enqvist's SSC S4 with Lotynk's array_lambdaBar is: ", array_S4_SSC)
 print(" \n scaled S4_sclaed is : ", array_S4_scaled_SSC)
-###########################################################################
-###  
 
-        
+
+###########################################################################
+####      scattering plot of lambda_bar vs Lotynk's pressure           ####
+###########################################################################
+
+# scatter plot of lambda_bar with Lotynk' pressure
+plot1.scatter(pressure, array_lambdaBar)
+
+# drawing out the lambda_bar = 1, TAB line
+plot1.plot([20.6, 22.8], [1.0, 1.0], 'r-')
+
+plot1.xlim([20.6, 22.8]);plot1.ylabel(r'$\bar{\lambda}$'); plot1.xlabel(r'$p$/bar');
+
+# add title
+plot1.title(r'$\bar{\lambda}$ of neucleation events')
+
+plot1.savefig('lambdaBar_AB_Phase_Enqvist_model_LotynkPressure.pdf');
+plot1.show()
+           
+plot1.clf()
+plot1.cla()
+plot1.close()
+
+###########################################################################
+###     scattering plot of S4 and S4_scaled vs Lotynk's pressure       ####
+###########################################################################
+
+# scatter plot of lambda_bar with Lotynk' pressure
+plot1.scatter(array_lambdaBar, array_S4_SSC, c='red')
+
+# plot1.xlim([20.6, 22.8]);
+plot1.xlim([0.998, 1.0]);plot1.ylim([-0.1, 0.1]);
+plot1.ylabel(r'$S_{4}$'); plot1.xlabel(r'$\bar{\lambda}$');
+
+# 
+plot1.legend([r'$S_{4}=\frac{\pi^{2}}{6\lambda}\frac{\bar{\lambda}}{(\bar{\lambda}-1)^{3}}$'], loc = 'upper left');plot1.grid()
+
+# add title
+plot1.title(r'Enqvist PRD SSC $S_{4}$ of neucleation events')
+
+plot1.savefig('SSC_S4_AB_Phase_Enqvist_model_LotynkPressure.pdf');
+plot1.show()
+           
+plot1.clf()
+plot1.cla()
+plot1.close()
+
+###########################################################################
+
+# scatter plot of lambda_bar with Lotynk' pressure
+plot1.scatter(array_lambdaBar, array_S4_scaled_SSC, c='green')
+
+# plot1.xlim([20.6, 22.8]);
+plot1.xlim([0.998, 1.0]); # plot1.ylim([-0.1, 0.1]);
+plot1.ylabel(r'$S_{4} \lambda$'); plot1.xlabel(r'$\bar{\lambda}$');
+
+# 
+plot1.legend([r'$S_{4} \lambda =\frac{\pi^{2}}{6}\frac{\bar{\lambda}}{(\bar{\lambda}-1)^{3}}$'], loc = 'upper left');plot1.grid()
+
+# add title
+plot1.title(r'Enqvist Scaled SSC $S_{4}$ of neucleation events')
+
+plot1.savefig('SSC_Scaled_S4_AB_Phase_Enqvist_model_LotynkPressure.pdf');
+plot1.show()
+
+
 
 ###########################################################################
 ################      contour plot lambda_bar   ###########################
