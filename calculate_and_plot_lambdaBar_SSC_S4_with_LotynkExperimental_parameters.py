@@ -157,6 +157,7 @@ for iP in range(0, lengthPressure, 1):
 
       # delta
         delta_pT = ((3*alpha)/(2*phi0*phi0*phi0))*(DeltaADeltaB_term + betaAbetaB_coefficient*(8*beta1 + 14*beta2 + 5*beta3 + 7*beta4 + 5*beta5))
+        print("\n delta_pT is ", delta_pT)
         
       # lambda
         lambda_pT = (alpha/(phi0*phi0*phi0*phi0))*(DeltaADeltaB_term + betaAbetaB_coefficient*(5*beta1 + 14*beta2 + 4*beta3 + 9*beta4 + 7*beta5))
