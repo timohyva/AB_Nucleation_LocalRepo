@@ -152,6 +152,10 @@ No_filtered_samples = 0
 
 net_lambda_bar_filtered = np.array([])
 
+net_M2_filtered = np.array([])
+net_delta_filtered = np.array([])
+net_lambda_filtered = np.array([])
+
 net_d11_array_filtered = np.array([])
 net_d12_array_filtered = np.array([])
 net_d13_array_filtered = np.array([])
@@ -193,9 +197,9 @@ fig1, ((ax1, ax2, ax3), (ax4, ax5, ax6), (ax7, ax8, ax9)) = plot1.subplots(3, 3,
 fig2, ax_almbda_bar = plot1.subplots(1, 1)
 
 # marker size of scatter plot
-markersaize = 5
+markersaize = 3.6
 
-No_loops = 50
+No_loops = 8200
 
 for i in range(0, No_loops, 1):
 
@@ -294,8 +298,18 @@ for i in range(0, No_loops, 1):
     # print(" \n\n the logic filter is :\n ", logic_filter)
 
     lambda_bar_filtered = lambda_bar_array[logic_filter]
-
     net_lambda_bar_filtered = np.append(net_lambda_bar_filtered, lambda_bar_filtered)
+
+    M2_filtered = M2_array[logic_filter]
+    net_M2_filtered = np.append(net_M2_filtered, M2_filtered)
+
+    delta_filtered = delta_array[logic_filter]
+    net_delta_filtered = np.append(net_delta_filtered, delta_filtered)
+
+    lambda_filtered = lambda_array[logic_filter]
+    net_lambda_filtered = np.append(net_lambda_filtered, lambda_filtered)
+
+   
 
     ######################################################
 
@@ -398,7 +412,7 @@ for i in range(0, No_loops, 1):
 '''
 #######################################################################################################
 
-np.savez('filtered_lambdaBar_Dalphai_10000loops.npz', lambdaBar = net_lambda_bar_filtered,
+np.savez('filtered_lambdaBar_Dalphai_8200loops.npz', lambdaBar = net_lambda_bar_filtered, M2 = net_M2_filtered, delta = net_delta_filtered, lambda_pT = net_lambda_filtered,
                                            d11 = net_d11_array_filtered, d12 = net_d12_array_filtered, d13 = net_d13_array_filtered,
                                            d21 = net_d21_array_filtered, d22 = net_d22_array_filtered, d23 = net_d23_array_filtered,
                                            d31 = net_d31_array_filtered, d32 = net_d32_array_filtered, d33 = net_d33_array_filtered,
@@ -420,12 +434,11 @@ print("\n\n the total samples number is : ", net_No_samples, " filtered samples 
 
 # save the filtered lambda_bar plot
 ax_almbda_bar.grid()
-fig2.savefig("plot_of_filtered_lambdaBar.pdf")
+fig2.savefig("plot_of_filtered_lambdaBar_8200loops.pdf")
 
 # save the filtered elements of D_alphai 
-fig1.savefig("polarPlot_of_18_filtered_elemetsOf_Dalphai.pdf")
+fig1.savefig("polarPlot_of_18_filtered_elemetsOf_Dalphai_8200loops.pdf")
 
-
-
+# show them
 plot1.show()
 
