@@ -2,7 +2,7 @@
 #############              Introduction and Description                            #############
 ################################################################################################
 '''
-   READ ME! Please!
+   >>>> READ ME! Please!
 '''
 # This script is the class module of intepolations of strong coupling (SC) correction data,
 # such as Tc, effective mass, Fermi velocity. They are necessary for calculating the SC corrected 
