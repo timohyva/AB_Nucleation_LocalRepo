@@ -1,13 +1,32 @@
-# This script is for creating the module of the object of intepolations of strong coupling beta,
-# Tc, effective mass, Fermi velocity. The data sheet comes form table. II of
+################################################################################################
+#############              Introduction and Description                            #############
+################################################################################################
+'''
+   READ ME! Please!
+'''
+# This script is the class module of intepolations of strong coupling (SC) correction data,
+# such as Tc, effective mass, Fermi velocity. They are necessary for calculating the SC corrected 
+# GL coefficients e.g., \alpha and \beta_{i}. The later is also called " material parameters ".
+
+# caution!
+'''
+  Users who focus on the SC corrected paramters e.g., gap energies of A/B phase, materail paramters
+  are NOT recommended to use this class module directly. 
+  
+  There is other module named " Module_SC_Beta_V*.py " is recommened to use in this case.
+  
+'''
+
+# The data sheet comes form table. II of
 # PRB 101.024517
 
 # This is version 0.1 (v.0.1) of the intepolation object (class)
 
 # author: quang. zhang (github@timohyva)
 
-
-# zeta3 = 1.2020569;
+# zeta3 = 1.2020569
+  
+#################################################################################################  
 
 import numpy as np
 
