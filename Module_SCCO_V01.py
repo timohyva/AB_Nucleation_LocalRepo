@@ -10,7 +10,7 @@
 
 # caution!
 '''
-  Users who focus on the SC corrected paramters e.g., gap energies of A/B phase, materail paramters
+  Users who focus on the SC corrected paramters e.g., gap energies of A/B phase, material paramters
   are NOT recommended to use this class module directly. 
   
   There is other module named " Module_SC_Beta_V*.py " is recommened to use in this case.
