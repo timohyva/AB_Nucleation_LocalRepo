@@ -6,6 +6,7 @@
 *.pdf~
 *.npz
 *.npy
+*.xlsx
 
 # ignore the folders
 */
