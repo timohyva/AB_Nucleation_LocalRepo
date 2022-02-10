@@ -11,29 +11,20 @@
 
 
 
-import csv
+import pandas as pd
+import numpy as np
 
-# import the csv data of experment
-with open('slow_transition_lot_et_al_2021.csv', newline='') as f:
-     reader = csv.reader(f)
-     data = list(reader)
-
-# print(data)
+# import the csv data of Parpia's new data
+sheet = pd.read_excel('Const_P.xlsx')
+sheet = np.array(sheet)
 
 
-list1 = list(zip(*data))
-# print(list1)
-# print(list(list1[0]))
-# print(list1[1])
+# pressure
+pressure = sheet[:, 1]; print("\n\n Parpia's new pressure is ",pressure)
 
-Temperature = []
-for ii in list(list1[0]):
-    Temperature.append(float(ii))
+# T_IC, unit mK
+T_IC = sheet[:, 2]; print("\n Parpia's T_IC is ", T_IC)
 
-print("Lotynk's Temperature is", Temperature)  
-    
-pressure = []
-for ii in list(list1[1]):
-    pressure.append(float(ii))    
+# T_HEC
+T_HEC = sheet[:, 3]; print("\n Parpia's T_HEC is ", T_HEC)
 
-print("Lotynk's pressure is", pressure)  
