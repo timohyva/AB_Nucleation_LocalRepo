@@ -16,7 +16,8 @@
 
 ##################################################################
 
-import Module_SC_CorrectionObject_V01 as SC # strong coupling correction module
+import Module_SCCO_V02 as SC
+# import Module_SC_CorrectionObject_V01 as SC # strong coupling correction module
 import matplotlib.pyplot as plot1
 import matplotlib
 import numpy as np
