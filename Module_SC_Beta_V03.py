@@ -101,8 +101,8 @@ BetaObject = SC.BETA('betaAndTc')
 # Tc in mK
 def Tcp(p):
    Kelvin = 1.; mK = 10**(-3)
-   BetaObject.tc_function(SC.P,SC.Tc,p);# Tc_p = (BetaObject.tcp)*mK
-#   return Tc_p
+   BetaObject.tc_function(SC.P,SC.Tc,p);
+
    return (BetaObject.tcp)*mK
 
 # effective mass
@@ -113,36 +113,30 @@ def mEff(p):
    # mass of helium3 atom
    m3 = 3.016293*u 
 
-   BetaObject.mStar_function(SC.P,SC.Ms,p); # meffective = (BetaObject.ms)*m3
-#   return meffective
+   BetaObject.mStar_function(SC.P,SC.Ms,p); 
+
    return (BetaObject.ms)*m3
 
 # fermi velocity
 def vF(p):
-   BetaObject.vFermi_function(SC.P,SC.VF,p); # vFermi = BetaObject.vf
-#   return vFermi
-   return BetaObject.vf
+   BetaObject.vFermi_function(SC.P,SC.VF,p); return BetaObject.vf
 
 # xi0p
 def xi0p(p):
    # nano meter
    m = 1; nm = (10**(-9))*m 
    
-   BetaObject.xi0_function(SC.P,SC.XI0,p); # xi0_p = (BetaObject.xi0)*nm
-#   return xi0_p
-   return (BetaObject.xi0)*nm
+   BetaObject.xi0_function(SC.P,SC.XI0,p); return (BetaObject.xi0)*nm
 
 # N(0)
 def N0(p):
    J = 1; s = 1;hbar = 1.054571817*(10**(-34))*J*s
-#   n0 = ((mEff(p)**(2))*vF(p))/((2*pi*pi)*(hbar**(3)))
-#   return n0
+
    return ((mEff(p)**(2))*vF(p))/((2*pi*pi)*(hbar**(3)))
    
 # pnoa and pnob tuple
 def pno(): return (1./3., (7.0*zeta3)/(240.0*pi*pi))
-#   tup = (1./3., (7.0*zeta3)/(240.0*pi*pi));
-#   return tup
+
    
                                                          
 
@@ -152,38 +146,28 @@ def pno(): return (1./3., (7.0*zeta3)/(240.0*pi*pi))
 #                                 
 
 # return dimensionless alpha i,e., \tilde{\alpha}
-def alpha_td(p,T): return (T/Tcp(p) - 1.) # apt = (T/Tcp(p) - 1.); # return apt
+def alpha_td(p,T): return (T/Tcp(p) - 1.) 
 
                                                                                       
 # return dimensionless beta_1 i.e., \tilde{\beta}_1
 def beta1_td(p, T):
-   BetaObject.c1_function(SC.P,SC.c1,p); # b1pt = -1. + (T/Tcp(p))*BetaObject.c1p
-#   return b1pt
-   return -1. + (T/Tcp(p))*BetaObject.c1p
+   BetaObject.c1_function(SC.P,SC.c1,p); return -1. + (T/Tcp(p))*BetaObject.c1p
 
 # return dimensionless beta_2 i.e., \tilde{\beta}_2 
 def beta2_td(p, T):
-    BetaObject.c2_function(SC.P,SC.c2,p); # b2pt = 2. + (T/Tcp(p))*BetaObject.c2p
-#    return b2pt
-    return 2. + (T/Tcp(p))*BetaObject.c2p
+    BetaObject.c2_function(SC.P,SC.c2,p); return 2. + (T/Tcp(p))*BetaObject.c2p
 
 # return dimensionless beta_3 i.e., \tilde{\beta}_3
 def beta3_td(p, T):
-   BetaObject.c3_function(SC.P,SC.c3,p); # b3pt = 2. + (T/Tcp(p))*BetaObject.c3p
-#   return b3pt
-   return  2. + (T/Tcp(p))*BetaObject.c3p
+   BetaObject.c3_function(SC.P,SC.c3,p); return  2. + (T/Tcp(p))*BetaObject.c3p
 
 # return dimensionless beta_4 i.e., \tilde{\beta}_4
 def beta4_td(p, T):
-   BetaObject.c4_function(SC.P,SC.c4,p); # b4pt = 2. + (T/Tcp(p))*BetaObject.c4p
-#   return b4pt
-   return 2. + (T/Tcp(p))*BetaObject.c4p
+   BetaObject.c4_function(SC.P,SC.c4,p); return 2. + (T/Tcp(p))*BetaObject.c4p
 
 # return dimensionless beta_5 i.e., \tilde{\beta}_5
 def beta5_td(p, T):
-   BetaObject.c5_function(SC.P,SC.c5,p); # b5pt = -2. + (T/Tcp(p))*BetaObject.c5p
-#   return b5pt
-   return -2. + (T/Tcp(p))*BetaObject.c5p
+   BetaObject.c5_function(SC.P,SC.c5,p); return -2. + (T/Tcp(p))*BetaObject.c5p
 
 
 ########################################################################   
@@ -192,13 +176,9 @@ def beta5_td(p, T):
 #                                
 
 # \beta_A                                 
-def betaA_td(p, T):
-#   bApt = beta2_td(p,T) + beta4_td(p,T) + beta5_td(p,T)
-#   return bApt
-   return beta2_td(p,T) + beta4_td(p,T) + beta5_td(p,T)
+def betaA_td(p, T): return beta2_td(p,T) + beta4_td(p,T) + beta5_td(p,T)
 
 # \beta_B                                 
 def betaB_td(p, T):
-#   bBpt = beta1_td(p,T) + beta2_td(p,T) + (1./3.)*(beta3_td(p,T) + beta4_td(p,T) + beta5_td(p,T))
-#   return bBpt
-    return beta1_td(p,T) + beta2_td(p,T) + (1./3.)*(beta3_td(p,T) + beta4_td(p,T) + beta5_td(p,T))
+    return (beta1_td(p,T) + beta2_td(p,T)
+            + (1./3.)*(beta3_td(p,T) + beta4_td(p,T) + beta5_td(p,T)))
