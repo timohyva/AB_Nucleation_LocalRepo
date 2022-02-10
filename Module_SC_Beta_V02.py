@@ -1,25 +1,39 @@
 ####################################################################
 ################ Important notations and descriptions ##############
 ####################################################################
+#
+#                 >>>>  READ ME ! Please !  <<<<
+#
 
-# this is version 0.2 of module Strong Coupling correction.
-# It provides SC corrected Ginzburg-Landau coefficients with " pno * dimentionless expressions * dimensional expressions ".
+# this is version 0.2 of module " Strong Coupling (SC) correction ".
+
+# It provides SC corrected Ginzburg-Landau coefficients, gap energies and other physical qulities
+# with tamplate 
+     
+#    " pno * dimentionless expressions * dimensional expressions ".
+
+# In this way, user can get dimensionless form of physical qualities by using object attribute pattern.
+# When the dimenssional expressions of these qualities are intrested, user can easily combine the pre-index (pno)
+# and the dimensional expressions to the dimensionless expression to get the desired qualities.
+
+# pno and dimensional expressions are also be provided by this module, and can be called as object attributes.
+   
+
 
 # For example, version 0.2 gives out \alpha and \beta_{1} as 
-'''
-   pnoa * alpha_td *N(0),
+#'''
+#   pnoa * alpha_td * N(0),
 
-   pnob * beta_td * N(0) (kb * Tc)^(-2).
+#   pnob * beta_td * N(0) (kb * Tc)^(-2).
 
-'''
-# pnob, N(0), Tc and betatd will be offered separately when they are called with " module.name " form i.e., SSC.beta_td etc.
+#'''
+# pnoa(b), N(0), Tc and betatd will be offered separately when they are called with " module.name " form i.e., SSC.beta_td etc.
+
+####################################################################
 
 # This script uses the SC BetaObject module.
 
 # strong coupling correction coefficients of \beta comes from PRB. 101. 024517
-# the free energy difference is rescaled by absolute value of equilibrium free energy of B phase
-
-# This is version 0.1 of SC beta parameters code, in which the pico-Joule(pJ 10^-12) unit is used 
 
 # author: Quang. Zhang (github@hyvatimo)
 
@@ -27,7 +41,7 @@
 
 #####################################################################
 
-import Module_SC_CorrectionObject_V01 as SC # strong coupling list module
+import Module_SCCO_V02 as SC 
 import numpy as np
 
 from math import pi
@@ -37,26 +51,34 @@ import math
 ####                  Constants declations                       ####
 #####################################################################
 ####
-'''
-  Those constants are crucial when user want to call physical qulities,
-  such as density of state N(0), symmetry breaking temperature Tc or
-  temperature-dependent GL coherent length.
+#'''
+#  Those constants are crucial when user want to call physical qulities,
+#  such as density of state N(0), symmetry breaking temperature Tc or
+#  temperature-dependent GL coherent length.
 
-'''
+#'''
 #####################################################################
 
-m = 1;s = 1; J = 1; Kelvin = 1; kg = 1; bar = 1;# Length unit, Time unit, Energy unit, mass unit, pressure unit 
+# Length unit, Time unit, Energy unit, mass unit, pressure unit 
+m = 1;s = 1; J = 1; Kelvin = 1; kg = 1; bar = 1;
+
+# \zeta(3)
 zeta3 = 1.2020569;
-# kb = 8.617333262145*(10**(-5)) #Boltzmann ev.K^-1
-kb = 1.380649*(10**(-23))*J*(Kelvin**(-1)) # Boltzmann constant J.K^-1
-c = 2.99792458*(10**(8))*m*(s**(-1)) # speed of light, m.s^-1
 
-# hbar = 6.582119569*(10**(-16)) #plank constant, eV.s
-hbar = 1.054571817*(10**(-34))*J*s # planck constant, J.s
-# u = 9.3149410242*(10**(8))*eV*(c**(-2)) # atomic mass unit, Dalton, eV.c^-2
-u = 1.66053906660*(10**(-27))*kg # atomic mass unit, Dalton, kg
+# Boltzmann constant J.K^-1
+kb = 1.380649*(10**(-23))*J*(Kelvin**(-1))
 
-m3 = 3.016293*u #mass of helium3 atom
+# speed of light, m.s^-1
+c = 2.99792458*(10**(8))*m*(s**(-1)) 
+
+# planck constant, J.s
+hbar = 1.054571817*(10**(-34))*J*s 
+
+# atomic mass unit, Dalton, kg
+u = 1.66053906660*(10**(-27))*kg 
+
+# mass of helium3 atom
+m3 = 3.016293*u 
 
 
 ######################################################################
@@ -67,96 +89,107 @@ BetaObject = SC.BETA('betaAndTc')
 
 ######################################################################
 
-def calculate_SC_beta_gaps_etc(p,T):
 
-   BetaObject.c1_function(SC.P,SC.c1,p);c1p = BetaObject.c1p
-   BetaObject.c2_function(SC.P,SC.c2,p);c2p = BetaObject.c2p
-   BetaObject.c3_function(SC.P,SC.c3,p);c3p = BetaObject.c3p
-   BetaObject.c4_function(SC.P,SC.c4,p);c4p = BetaObject.c4p
-   BetaObject.c5_function(SC.P,SC.c5,p);c5p = BetaObject.c5p
-   BetaObject.tc_function(SC.P,SC.Tc,p);Tcp = (BetaObject.tcp)*(10**(-3)) # turn mK to Kelvin 10^(-3)
-   BetaObject.mStar_function(SC.P,SC.Ms,p); mEffective = (BetaObject.ms)*m3
-   BetaObject.vFermi_function(SC.P,SC.VF,p); vFermi = BetaObject.vf
-   BetaObject.xi0_function(SC.P,SC.XI0,p); xi0p = (BetaObject.xi0)*(10**(-9)) # turn nm to m 10^(-9)
+######################################################################
+#######      Module functions are implemented from here       ########
+######################################################################
 
-   N0 = ((mEffective**(2))*vFermi)/((2*pi*pi)*(hbar**(3))) # energy density of Fermi surface
+##
+#'''
+# Tcp, pnoa, pnob, N(0) 
+#'''
+# Tc in mK
+def Tcp(p):
+   Kelvin = 1.; mK = 10**(-3)
+   BetaObject.tc_function(SC.P,SC.Tc,p);Tc_p = (BetaObject.tcp)*mK
+   return Tc_p
 
-   t = T/Tcp
-    
+# effective mass
+def mEff(p):
+   # atomic mass unit, Dalton, kg
+   kg = 1;u = 1.66053906660*(10**(-27))*kg 
 
-   print('\npressure is ',p,' ,c1p is ',c1p,' ,c2p is ',c2p,' ,c3p is ',c3p,' ,c4p is ',c4p,' ,c4p ',' ,c5p ',c5p,' ,tcp is ',Tcp,' ,xi0p is ', xi0p, '\n\n')
+   # mass of helium3 atom
+   m3 = 3.016293*u 
 
-   print('\npressure is, ',p,' effective mass is, ', mEffective, ' Fermi velocity is,', vFermi, ' N(0) is ',N0,'\n\n')
-    
+   BetaObject.mStar_function(SC.P,SC.Ms,p); meffective = (BetaObject.ms)*m3
+   return meffective
+
+# fermi velocity
+def vF(p):
+   BetaObject.vFermi_function(SC.P,SC.VF,p); # vFermi = BetaObject.vf
+#   return vFermi
+   return BetaObject.vf
+
+# xi0p
+def xi0p(p):
+   # nano meter
+   m = 1; nm = (10**(-9))*m 
    
-   print('temperatureis:, ',t)
+   BetaObject.xi0_function(SC.P,SC.XI0,p); # xi0_p = (BetaObject.xi0)*nm
+#   return xi0_p
+   return (BetaObject.xi0)*nm
 
-   xiGLWeakCoupling = math.sqrt((7.0*zeta3)/20.0)*xi0p # weak coupling GL coherent length in PRB 101 024517
+# N(0)
+def N0(p):
+   J = 1; s = 1;hbar = 1.054571817*(10**(-34))*J*s
+   n0 = ((mEff(p)**(2))*vF(p))/((2*pi*pi)*(hbar**(3)))
+   return n0
+   
+# pnoa and pnob tuple
+def pno(): return (1./3., (7.0*zeta3)/(240.0*pi*pi))
+#   tup = (1./3., (7.0*zeta3)/(240.0*pi*pi));
+#   return tup
+   
+                                                         
 
-   if t >= 1:
+######################################################################
+##
+# \tilde{\alpha}, \tilde{\beta}_{i}
+#                                 
 
-      print(" bro, we just got temperature at Tc, you get nothing. **__**, see all stuffs as np.nan ")
+# return dimensionless alpha i,e., \tilde{\alpha}
+def alpha_td(p,T): apt = (T/Tcp(p) - 1.); return apt
 
-      alpha = np.nan
-      beta1 = np.nan
-      beta2 = np.nan
-      beta3 = np.nan
-      beta4 = np.nan
-      beta5 = np.nan
-      betaA = np.nan
-      betaB = np.nan
-      DeltaA = np.nan
-      DeltaB = np.nan
-      phi0 = np.nan
-      xitp =np.nan
-      
-                           
-   else:
+                                                                                      
+# return dimensionless beta_1 i.e., \tilde{\beta}_1
+def beta1_td(p, T):
+   BetaObject.c1_function(SC.P,SC.c1,p); # b1pt = -1. + (T/Tcp(p))*BetaObject.c1p
+#   return b1pt
+   return -1. + (T/Tcp(p))*BetaObject.c1p
 
-      alpha = (1/3)*N0*(t - 1)
-       
-      beta_wc1 = -((7*N0*zeta3)/(240*pi*pi*kb*kb*Tcp*Tcp));
-      beta_wc2 = -2*beta_wc1
-      beta_wc3 = -2*beta_wc1
-      beta_wc4 = -2*beta_wc1
-      beta_wc5 = 2*beta_wc1
+# return dimensionless beta_2 i.e., \tilde{\beta}_2 
+def beta2_td(p, T):
+    BetaObject.c2_function(SC.P,SC.c2,p); b2pt = 2. + (T/Tcp(p))*BetaObject.c2p
+    return b2pt
 
-      beta_sc1 = c1p*abs(beta_wc1)
-      beta_sc2 = c2p*abs(beta_wc1)
-      beta_sc3 = c3p*abs(beta_wc1)
-      beta_sc4 = c4p*abs(beta_wc1)
-      beta_sc5 = c5p*abs(beta_wc1)
+# return dimensionless beta_3 i.e., \tilde{\beta}_3
+def beta3_td(p, T):
+   BetaObject.c3_function(SC.P,SC.c3,p); b3pt = 2. + (T/Tcp(p))*BetaObject.c3p
+   return b3pt
 
-      beta1 = beta_wc1 + t*beta_sc1
-      beta2 = beta_wc2 + t*beta_sc2
-      beta3 = beta_wc3 + t*beta_sc3
-      beta4 = beta_wc4 + t*beta_sc4
-      beta5 = beta_wc5 + t*beta_sc5 
+# return dimensionless beta_4 i.e., \tilde{\beta}_4
+def beta4_td(p, T):
+   BetaObject.c4_function(SC.P,SC.c4,p); b4pt = 2. + (T/Tcp(p))*BetaObject.c4p
+   return b4pt
 
-      xitp = xiGLWeakCoupling/math.sqrt(1-t) # temperature dependent coherent length  
-       
-      print(' Temperature dependent GL xi is ', xitp)
-            
-#########################################################
-########### betaA, betaB, DeltaA, DeltaB, phi0 ##########
-#########################################################
-
-      betaA = beta2 + beta4 + beta5 # betaA
-
-      betaB = beta1 + beta2 + (1/3)*(beta3 + beta4 + beta5) # betaB
-
-      DeltaA = math.sqrt((-alpha)/(2*betaA)) 
-
-      DeltaB = math.sqrt((-alpha)/(2*betaB))
-
-      phi0 = math.sqrt(DeltaA*DeltaA - (math.sqrt(2/3))*DeltaA*DeltaB + DeltaB*DeltaB)
-        
-   return alpha, beta1, beta2, beta3, beta4, beta5, betaA, betaB, DeltaA, DeltaB, phi0, Tcp, xitp, xi0p, t
-           
-          
+# return dimensionless beta_5 i.e., \tilde{\beta}_5
+def beta5_td(p, T):
+   BetaObject.c5_function(SC.P,SC.c5,p); b5pt = -2. + (T/Tcp(p))*BetaObject.c5p
+   return b5pt
 
 
+########################################################################   
+#
+#  \tilde{\beta}_{A}, \tilde{\beta}_{B}
+#                                
 
+# \beta_A                                 
+def betaA_td(p, T):
+   bApt = beta2_td(p,T) + beta4_td(p,T) + beta5_td(p,T)
+   return bApt
 
-
-
+# \beta_B                                 
+def betaB_td(p, T):
+   bBpt = beta1_td(p,T) + beta2_td(p,T) + (1./3.)*(beta3_td(p,T) + beta4_td(p,T) + beta5_td(p,T))
+   return bBpt
