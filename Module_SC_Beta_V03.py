@@ -135,7 +135,7 @@ def N0(p):
    return ((mEff(p)**(2))*vF(p))/((2*pi*pi)*(hbar**(3)))
    
 # pnoa and pnob tuple
-def pno(): return (1./3., (7.0*zeta3)/(240.0*pi*pi))
+def pno(): zeta3 = 1.2020569; return (1./3., (7.0*zeta3)/(240.0*pi*pi))
 
    
                                                          
