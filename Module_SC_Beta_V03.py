@@ -2,7 +2,7 @@
 ################ Important notations and descriptions ##############
 ####################################################################
 #
-#                 >>>>  READ ME ! Please !  <<<<
+#                   >>>>  READ ME ! Please !  <<<<
 #
 
 # this is version 0.2 of module " Strong Coupling (SC) correction ".
@@ -145,27 +145,27 @@ def pno(): return (1./3., (7.0*zeta3)/(240.0*pi*pi))
 # \tilde{\alpha}, \tilde{\beta}_{i}
 #                                 
 
-# return dimensionless alpha i,e., \tilde{\alpha}
+# dimensionless alpha i,e., \tilde{\alpha}
 def alpha_td(p,T): return (T/Tcp(p) - 1.) 
 
                                                                                       
-# return dimensionless beta_1 i.e., \tilde{\beta}_1
+# dimensionless beta_1 i.e., \tilde{\beta}_1
 def beta1_td(p, T):
    BetaObject.c1_function(SC.P,SC.c1,p); return -1. + (T/Tcp(p))*BetaObject.c1p
 
-# return dimensionless beta_2 i.e., \tilde{\beta}_2 
+# dimensionless beta_2 i.e., \tilde{\beta}_2 
 def beta2_td(p, T):
     BetaObject.c2_function(SC.P,SC.c2,p); return 2. + (T/Tcp(p))*BetaObject.c2p
 
-# return dimensionless beta_3 i.e., \tilde{\beta}_3
+# dimensionless beta_3 i.e., \tilde{\beta}_3
 def beta3_td(p, T):
    BetaObject.c3_function(SC.P,SC.c3,p); return  2. + (T/Tcp(p))*BetaObject.c3p
 
-# return dimensionless beta_4 i.e., \tilde{\beta}_4
+# dimensionless beta_4 i.e., \tilde{\beta}_4
 def beta4_td(p, T):
    BetaObject.c4_function(SC.P,SC.c4,p); return 2. + (T/Tcp(p))*BetaObject.c4p
 
-# return dimensionless beta_5 i.e., \tilde{\beta}_5
+# dimensionless beta_5 i.e., \tilde{\beta}_5
 def beta5_td(p, T):
    BetaObject.c5_function(SC.P,SC.c5,p); return -2. + (T/Tcp(p))*BetaObject.c5p
 
