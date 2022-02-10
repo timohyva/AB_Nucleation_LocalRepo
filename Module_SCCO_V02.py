@@ -1,21 +1,21 @@
 ################################################################################################
 #############              Introduction and Description                            #############
 ################################################################################################
-'''
-   >>>> READ ME! Please!
-'''
+#'''
+#   >>>> READ ME! Please!
+#'''
 # This script is the class module of intepolations of strong coupling (SC) correction data,
 # such as Tc, effective mass, Fermi velocity. They are necessary for calculating the SC corrected 
 # GL coefficients e.g., \alpha and \beta_{i}. The later is also called " material parameters ".
 
 # caution!
-'''
-  Users who focus on the SC corrected paramters e.g., gap energies of A/B phase, material paramters
-  are NOT recommended to use this class module directly. 
+#'''
+#  Users who focus on the SC corrected paramters e.g., gap energies of A/B phase, material paramters
+#  are NOT recommended to use this class module directly. 
   
-  There is other module named " Module_SC_Beta_V*.py " is recommened to use in this case.
+#  There is other module named " Module_SC_Beta_V*.py " is recommened to use in this case.
   
-'''
+#'''
 
 # The data sheet comes form table. II of
 # PRB 101.024517
