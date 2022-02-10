@@ -205,11 +205,11 @@ ratio_HEC_Parpia = fA_HEC_Parpia/fBA_HEC_Parpia; print("\n fA/fBA HEC looks like
 #############################################################################
 
 fig, ax = plt.subplots(1,1)
-# ax.scatter(pressure_Lotynk, ratio_Lotynk, color = "green"); 
+ax.scatter(pressure_Lotynk, ratio_Lotynk, color = "green"); 
 ax.scatter(Parpia.pressure, ratio_IC_Parpia, color = "blue");
 ax.scatter(Parpia.pressure, ratio_HEC_Parpia, color = "red", marker ="x")
 
-ax.legend(labels=("p-T_IC", "p-T_HEC"), loc="upper right")
+ax.legend(labels=("PRL 2021 slow cooling events","p-T_IC", "p-T_HEC"), loc="upper right")
 
 ax.set_xlabel(r"p/bar");
 ax.set_ylabel(r"$\frac{f_{A}}{f_{B}-f_{A}}$")
