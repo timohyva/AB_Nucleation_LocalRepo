@@ -52,10 +52,8 @@ class BETA:
          print(" beta oject is crated ")
 
      def c1_function(self,P,c1,pressure):
-         print(pressure)
-         self.c1p =  np.interp(pressure,P,c1)
-         print(self.c1p)
-
+        self.c1p =  np.interp(pressure,P,c1)
+    
      def c2_function(self,P,c2,pressure):
          self.c2p =  np.interp(pressure,P,c2)
 
