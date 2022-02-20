@@ -5,7 +5,7 @@
 #                   >>>>  READ ME ! Please !  <<<<
 #
 
-# this is version 0.1 of module of Strong Coupling (SC) correction. which provides easy-using dimensionless material parameters, gaps.
+# this is version 0.0 of module of Strong Coupling (SC) correction. which provides easy-using dimensionless material parameters, gaps.
 
 # It provides SC corrected Ginzburg-Landau coefficients, gap energies and other physical qulities
 # with pattern 
