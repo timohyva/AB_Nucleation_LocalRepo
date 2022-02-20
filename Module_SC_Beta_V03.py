@@ -146,7 +146,7 @@ def pno(): zeta3 = 1.2020569; return (1./3., (7.0*zeta3)/(240.0*pi*pi))
 #                                 
 
 # dimensionless alpha i,e., \tilde{\alpha}
-def alpha_td(p,T): return (T/Tcp(p) - 1.) 
+def alpha_td(p, T): return (T/Tcp(p) - 1.) 
 
                                                                                       
 # dimensionless beta_1 i.e., \tilde{\beta}_1
@@ -176,9 +176,9 @@ def beta5_td(p, T):
 #                                
 
 # \beta_A                                 
-def betaA_td(p, T): return beta2_td(p,T) + beta4_td(p,T) + beta5_td(p,T)
+def betaA_td(p, T): return beta2_td(p, T) + beta4_td(p, T) + beta5_td(p, T)
 
 # \beta_B                                 
 def betaB_td(p, T):
-    return (beta1_td(p,T) + beta2_td(p,T)
-            + (1./3.)*(beta3_td(p,T) + beta4_td(p,T) + beta5_td(p,T)))
+    return (beta1_td(p, T) + beta2_td(p, T)
+            + (1./3.)*(beta3_td(p, T) + beta4_td(p, T) + beta5_td(p, T)))
