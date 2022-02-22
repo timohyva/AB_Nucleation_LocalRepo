@@ -117,7 +117,7 @@ def N0(p): return SCtd.N0(p)
 #                                 
 
 # dimensionless alpha i,e., \bar{\alpha} or alpha_bar
-def alpha_bar(p,T):
+def alpha_bar(p, T):
    (c_alpha, c_betai) = SCtd.pno(); return c_alpha*SCtd.alpha_td(p, T)
                                                                                       
 # dimensionless beta_1 i.e., \bar{{\beta}}_1 or beta1_bar
