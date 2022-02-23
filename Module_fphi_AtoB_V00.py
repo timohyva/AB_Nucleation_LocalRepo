@@ -153,7 +153,7 @@ def fphi_bar(p, T, phi_bar):
    # third term, in unit of N0 * (Kb*Tc)^(-2) * (Kb*Tc)^(4)
    f4 = (1./4.) * lambda4_bar(p, T) * (phi_bar**4)
 
-   return (f1 - f3 + f4)
+   return (f2 - f3 + f4)
 
 
 ##
