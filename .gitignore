@@ -9,6 +9,7 @@
 *.xlsx
 *.txt
 *.~*
+*.*~
 
 # ignore the folders
 */
