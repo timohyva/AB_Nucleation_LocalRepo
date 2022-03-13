@@ -3,7 +3,7 @@
 //#include <cstddef>
 //#include <cmath>
 
-#include "SCCO.hpp"
+#include "SCCO_V00.hpp"
 
 
 int main(){
