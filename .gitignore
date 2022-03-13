@@ -11,5 +11,8 @@
 *.~*
 *.*~
 
+# ignore the executable of c++
+*.app 
+
 # ignore the folders
 */
