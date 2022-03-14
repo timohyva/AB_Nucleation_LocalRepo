@@ -52,7 +52,7 @@
 ######                       Modules & Constants                     #######
 ############################################################################
 
-import Module_SC_Beta_V03 as SCC 
+import Module_SC_Beta_V04 as SCC 
 # import Module_plot_TAB_line as TAB_line
 import Module_Lotynk_pT_parameter as Lotynk
 import Module_New_Parpia_pT_parameter as Parpia
@@ -87,8 +87,9 @@ Temperature_Lotynk = np.asarray(Lotynk.Temperature) # mili Kelvin
 pressure_Lotynk = np.asarray(Lotynk.pressure)
 
 # saving array 
-fA_Lotynk = np.array([])
+fB_Lotynk = np.array([])
 fBA_Lotynk = np.array([])
+xiGL_Lotynk = np.array([])
 
 #############################################################################
 
@@ -109,21 +110,25 @@ for iP in range(0, len(pressure_Lotynk), 1):
       print(" bro, we just got temperature at Tc, save a np.nan. ")
 
       # mask data from t > 1 region
-      fA_Lotynk = np.append(fA_Lotynk, np.nan)
+      fB_Lotynk = np.append(fB_Lotynk, np.nan)
     
       fBA_Lotynk = np.append(fBA_lotynk, np.nan)
+
+      xiGL_Lotynk = np.append(xiGL_lotynk, np.nan)
 
                  
     else:
 
-      fA_Lotynk = np.append(fA_Lotynk, SCC.alpha_td(p,T)/SCC.betaA_td(p,T))
+      fB_Lotynk = np.append(fB_Lotynk, SCC.alpha_td(p,T)/SCC.betaB_td(p,T))
      
-      fBA_Lotynk = np.append(fBA_Lotynk, (SCC.alpha_td(p,T)/SCC.betaB_td(p,T)) - (SCC.alpha_td(p,T)/SCC.betaA_td(p,T)))
+      fBA_Lotynk = np.append(fBA_Lotynk, (-SCC.alpha_td(p,T)/SCC.betaB_td(p,T)) + (SCC.alpha_td(p,T)/SCC.betaA_td(p,T)))
 
-      print(" \n Lotynk fA is ", fA_Lotynk[iP], " Lotynk fBA is ", fBA_Lotynk[iP])
+      xiGL_Lotynk = np.append(xiGL_Lotynk, SCC.xiGL(p, T))
 
-# ratio fA/fBA
-ratio_Lotynk = fA_Lotynk/fBA_Lotynk; print("\n fA/fBA looks like : ", ratio_Lotynk)
+      print(" \n Lotynk fB is ", fB_Lotynk[iP], " Lotynk fBA is ", fBA_Lotynk[iP], " Lotynk xiGL is ", xiGL_Lotynk[iP])
+
+# ratio -2fBxiGL/fBA
+fBxiGLfBA_Lotynk = -2.*(fB_Lotynk/fBA_Lotynk)*xiGL_Lotynk; print("\n fBxiGL/fBA looks like : ", fBxiGLfBA_Lotynk)
 
 
 #############################################################################
@@ -133,11 +138,13 @@ ratio_Lotynk = fA_Lotynk/fBA_Lotynk; print("\n fA/fBA looks like : ", ratio_Loty
 #############################################################################
 
 # saving array 
-fA_IC_Parpia = np.array([])
+fB_IC_Parpia = np.array([])
 fBA_IC_Parpia = np.array([])
+xiGL_IC_Parpia = np.array([])
 
-fA_HEC_Parpia = np.array([])
+fB_HEC_Parpia = np.array([])
 fBA_HEC_Parpia = np.array([])
+xiGL_HEC_Parpia = np.array([])
 
 #############################################################################
 
@@ -162,18 +169,22 @@ for iP in range(0, len(Parpia.pressure), 1):
       print(" bro, we just got temperature at Tc, save a np.nan. ")
 
       # mask data from t > 1 region
-      fA_IC_Parpia = np.append(fA_IC_Parpia, np.nan)
+      fB_IC_Parpia = np.append(fB_IC_Parpia, np.nan)
     
       fBA_IC_Parpia = np.append(fBA_IC_Parpia, np.nan)
+
+      xiGL_IC_Parpia = np.append(xiGL_IC_Parpia, np.nan)
 
                  
     else:
 
-      fA_IC_Parpia = np.append(fA_IC_Parpia, SCC.alpha_td(p,TIC)/SCC.betaA_td(p,TIC))
+      fB_IC_Parpia = np.append(fB_IC_Parpia, SCC.alpha_td(p,TIC)/SCC.betaB_td(p,TIC))
      
-      fBA_IC_Parpia = np.append(fBA_IC_Parpia, (SCC.alpha_td(p,TIC)/SCC.betaB_td(p,TIC)) - (SCC.alpha_td(p,TIC)/SCC.betaA_td(p,TIC)))
+      fBA_IC_Parpia = np.append(fBA_IC_Parpia, (-SCC.alpha_td(p,TIC)/SCC.betaB_td(p,TIC)) + (SCC.alpha_td(p,TIC)/SCC.betaA_td(p,TIC)))
 
-      print(" \n Parpia fA_IC is ", fA_IC_Parpia[iP], " Parpia fBA_IC is ", fBA_IC_Parpia[iP])
+      xiGL_IC_Parpia = np.append(xiGL_IC_Parpia, SCC.xiGL(p, TIC))
+
+      print(" \n Parpia fB_IC is ", fB_IC_Parpia[iP], " Parpia fBA_IC is ", fBA_IC_Parpia[iP], " Parpia xiGL is ", xiGL_IC_Parpia)
 
     ###########################################################################
     ###########################################################################
@@ -183,39 +194,43 @@ for iP in range(0, len(Parpia.pressure), 1):
       print(" bro, we just got temperature at Tc, save a np.nan. ")
 
       # mask data from t > 1 region
-      fA_HEC_Parpia = np.append(fA_HEC_Parpia, np.nan)
+      fB_HEC_Parpia = np.append(fB_HEC_Parpia, np.nan)
     
       fBA_HEC_Parpia = np.append(fBA_HEC_Parpia, np.nan)
+
+      xiGL_HEC_Parpia = np.append(xiGL_HEC_Parpia, np.nan)
 
                  
     else:
 
-      fA_HEC_Parpia = np.append(fA_HEC_Parpia, SCC.alpha_td(p,THEC)/SCC.betaA_td(p,THEC))
+      fB_HEC_Parpia = np.append(fB_HEC_Parpia, SCC.alpha_td(p,THEC)/SCC.betaB_td(p,THEC))
      
-      fBA_HEC_Parpia = np.append(fBA_HEC_Parpia, (SCC.alpha_td(p,THEC)/SCC.betaB_td(p,THEC)) - (SCC.alpha_td(p,THEC)/SCC.betaA_td(p,THEC)))
+      fBA_HEC_Parpia = np.append(fBA_HEC_Parpia, (-SCC.alpha_td(p,THEC)/SCC.betaB_td(p,THEC)) + (SCC.alpha_td(p,THEC)/SCC.betaA_td(p,THEC)))
 
-      print(" \n Parpia fA_IC is ", fA_HEC_Parpia[iP], " Parpia fBA_IC is ", fBA_HEC_Parpia[iP])  
+      xiGL_HEC_Parpia = np.append(xiGL_HEC_Parpia, SCC.xiGL(p, THEC))
 
-# ratio fA/fBA
-ratio_IC_Parpia = fA_IC_Parpia/fBA_IC_Parpia; print("\n fA/fBA IC looks like : ", ratio_IC_Parpia)
-ratio_HEC_Parpia = fA_HEC_Parpia/fBA_HEC_Parpia; print("\n fA/fBA HEC looks like : ", ratio_HEC_Parpia)
+      print(" \n Parpia fB_HEC is ", fB_HEC_Parpia[iP], " Parpia fBA_HEC is ", fBA_HEC_Parpia[iP], " xiGL_HEC is ", xiGL_HEC_Parpia[iP])  
+
+# ratio -2fBxiGL/fBA
+fBxiGLfBA_IC_Parpia = -2.*(fB_IC_Parpia/fBA_IC_Parpia)*xiGL_IC_Parpia; print("\n fBxiGL/fBA IC looks like : ", fBxiGLfBA_IC_Parpia)
+fBxiGLfBA_HEC_Parpia = -2.*(fB_HEC_Parpia/fBA_HEC_Parpia)*xiGL_HEC_Parpia; print("\n fBxiGL/fBA HEC looks like : ", fBxiGLfBA_HEC_Parpia)
 
 #############################################################################
 #####           scatter plot the ratio verse the pressure            ########
 #############################################################################
 
 fig, ax = plt.subplots(1,1)
-ax.scatter(pressure_Lotynk, ratio_Lotynk, color = "green"); 
-ax.scatter(Parpia.pressure, ratio_IC_Parpia, color = "blue");
-ax.scatter(Parpia.pressure, ratio_HEC_Parpia, color = "red", marker ="x")
+ax.scatter(pressure_Lotynk, fBxiGLfBA_Lotynk/(10**(-6)), color = "green"); 
+ax.scatter(Parpia.pressure, fBxiGLfBA_IC_Parpia/(10**(-6)), color = "blue");
+ax.scatter(Parpia.pressure, fBxiGLfBA_HEC_Parpia/(10**(-6)), color = "red", marker ="x")
 
 ax.legend(labels=("PRL 2021 slow cooling events","p-T_IC", "p-T_HEC"), loc="upper right")
 
 ax.set_xlabel(r"p/bar");
-ax.set_ylabel(r"$\frac{f_{A}}{f_{B}-f_{A}}$")
+ax.set_ylabel(r"$(\frac{-2 |f_{B}| \xi_{GL}(p,T)}{f_{B}-f_{A}})/{\mu}m$")
 ax.grid(True)
 
-fig.savefig("fAFBA_ratio.pdf")
+fig.savefig("critical_radius_halfShpere.pdf")
 plt.show()
 
 
